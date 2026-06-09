@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CSS Transition Generator — Free Transition Code Tool</title>
+<meta name="description" content="Free CSS Transition Generator with live preview, cubic-bezier editor, 15+ presets, and multi-property transitions. Copy transition CSS code instantly.">
+<meta name="keywords" content="CSS transition generator, cubic bezier, CSS animation, transition code, CSS tool, web design">
+<meta property="og:title" content="CSS Transition Generator — Free Transition Code Tool">
+<meta property="og:description" content="Generate CSS transitions with live preview, cubic-bezier curve editor, and 15+ presets. Copy code instantly.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://css-transition.pages.dev">
+<meta property="og:image" content="https://css-transition.pages.dev/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="CSS Transition Generator — Free Transition Code Tool">
+<meta name="twitter:description" content="Generate CSS transitions with live preview and copy code instantly.">
+<link rel="canonical" href="https://css-transition.pages.dev">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "CSS Transition Generator",
+  "description": "Free CSS Transition Generator with live preview, cubic-bezier editor, 15+ presets, and multi-property transitions.",
+  "url": "https://css-transition.pages.dev",
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": "Any",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "browserRequirements": "Requires JavaScript"
+}
+</script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#0d1117;--surface:#161b22;--border:#30363d;--text:#e6edf3;--muted:#8b949e;--accent:#58a6ff;--accent2:#79c0ff;--green:#3fb950;--orange:#d29922;--radius:8px}
+html{scroll-behavior:smooth}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:var(--bg);color:var(--text);line-height:1.6;min-height:100vh}
+a{color:var(--accent);text-decoration:none}
+.container{max-width:1100px;margin:0 auto;padding:0 20px}
+header{padding:16px 0;border-bottom:1px solid var(--border);background:var(--surface)}
+header .container{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
+.logo{font-size:1.25rem;font-weight:700;color:var(--text)}
+.logo span{color:var(--accent)}
+nav{display:flex;gap:18px;flex-wrap:wrap}
+nav a{color:var(--muted);font-size:.875rem;transition:color .2s}
+nav a:hover{color:var(--accent)}
+h1{font-size:2rem;font-weight:800;margin:32px 0 8px;letter-spacing:-.02em}
+h1 span{color:var(--accent)}
+.subtitle{color:var(--muted);font-size:1.05rem;margin-bottom:32px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:32px}
+@media(max-width:768px){.grid{grid-template-columns:1fr}}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:20px}
+.card h2{font-size:1.1rem;margin-bottom:16px;color:var(--accent2)}
+label{display:block;font-size:.8rem;color:var(--muted);margin-bottom:4px;font-weight:500;text-transform:uppercase;letter-spacing:.04em}
+select,input[type=number],input[type=text]{width:100%;background:var(--bg);border:1px solid var(--border);color:var(--text);border-radius:6px;padding:8px 10px;font-size:.9rem;margin-bottom:12px;outline:none;transition:border-color .2s}
+select:focus,input:focus{border-color:var(--accent)}
+input[type=range]{width:100%;margin:6px 0 12px;accent-color:var(--accent)}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:6px;font-size:.875rem;font-weight:600;cursor:pointer;border:none;transition:all .2s}
+.btn-primary{background:var(--accent);color:#fff}
+.btn-primary:hover{background:var(--accent2)}
+.btn-sm{padding:6px 12px;font-size:.8rem}
+.btn-danger{background:#da3633;color:#fff}
+.btn-danger:hover{background:#f85149}
+.btn-outline{background:transparent;border:1px solid var(--border);color:var(--text)}
+.btn-outline:hover{border-color:var(--accent);color:var(--accent)}
+.btn-copy{background:var(--green);color:#fff}
+.btn-copy:hover{opacity:.85}
+.btn-copy.copied{background:var(--accent)}
+.transition-row{background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:12px;margin-bottom:10px;position:relative}
+.transition-row .remove-btn{position:absolute;top:8px;right:8px;background:none;border:none;color:var(--muted);cursor:pointer;font-size:1.1rem;line-height:1}
+.transition-row .remove-btn:hover{color:#f85149}
+.row-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.row-grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+@media(max-width:500px){.row-grid,.row-grid-3{grid-template-columns:1fr}}
+.actions{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}
+#preview-area{min-height:220px;display:flex;align-items:center;justify-content:center;background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:40px;position:relative}
+#preview-box{width:80px;height:80px;background:var(--accent);border-radius:8px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#fff;font-size:.75rem;font-weight:600;transition:all .3s ease}
+#preview-area:hover #preview-box{width:140px;height:140px;background:var(--green);border-radius:50%;transform:rotate(45deg);opacity:.8}
+.preview-hint{position:absolute;bottom:10px;font-size:.7rem;color:var(--muted)}
+#code-output{background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:16px;font-family:'SF Mono',SFMono-Regular,Consolas,monospace;font-size:.85rem;white-space:pre-wrap;word-break:break-all;min-height:80px;color:var(--green);position:relative;margin-bottom:8px}
+.preset-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:8px;margin-bottom:16px}
+.preset-btn{background:var(--bg);border:1px solid var(--border);color:var(--text);padding:10px 8px;border-radius:6px;cursor:pointer;font-size:.8rem;text-align:center;transition:all .2s}
+.preset-btn:hover{border-color:var(--accent);color:var(--accent)}
+.preset-btn.active{border-color:var(--accent);background:rgba(88,166,255,.1)}
+.bezier-container{margin-top:8px;display:none}
+.bezier-container.visible{display:block}
+#bezier-canvas{width:100%;height:200px;background:var(--bg);border:1px solid var(--border);border-radius:6px;cursor:crosshair;display:block}
+.bezier-info{display:flex;justify-content:space-between;font-size:.75rem;color:var(--muted);margin-top:6px}
+section{padding:48px 0}
+section h2{font-size:1.5rem;margin-bottom:24px;font-weight:700}
+.features-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:20px}
+.feature{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:24px}
+.feature h3{color:var(--accent2);font-size:1rem;margin-bottom:8px}
+.feature p{color:var(--muted);font-size:.9rem}
+.faq-list{max-width:720px}
+.faq-item{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);margin-bottom:10px;overflow:hidden}
+.faq-q{padding:16px 20px;cursor:pointer;font-weight:600;display:flex;justify-content:space-between;align-items:center;user-select:none}
+.faq-q::after{content:'+';font-size:1.2rem;color:var(--muted);transition:transform .3s}
+.faq-item.open .faq-q::after{transform:rotate(45deg)}
+.faq-a{max-height:0;overflow:hidden;transition:max-height .3s ease;padding:0 20px;color:var(--muted);font-size:.9rem;line-height:1.7}
+.faq-item.open .faq-a{max-height:300px;padding:0 20px 16px}
+.email-section{text-align:center;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:40px 24px}
+.email-section p{color:var(--muted);margin-bottom:16px}
+.email-form{display:flex;gap:8px;max-width:420px;margin:0 auto}
+.email-form input{flex:1;background:var(--bg);border:1px solid var(--border);color:var(--text);border-radius:6px;padding:10px 14px;font-size:.9rem;outline:none}
+.email-form input:focus{border-color:var(--accent)}
+.cross-links{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-top:24px}
+.cross-link{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px;transition:border-color .2s}
+.cross-link:hover{border-color:var(--accent)}
+.cross-link h4{font-size:.9rem;margin-bottom:4px;color:var(--text)}
+.cross-link p{font-size:.8rem;color:var(--muted)}
+footer{border-top:1px solid var(--border);padding:24px 0;text-align:center;color:var(--muted);font-size:.8rem;margin-top:40px}
+</style>
+</head>
+<body>
+<header>
+<div class="container">
+<div class="logo">CSS <span>Transition</span> Generator</div>
+<nav>
+<a href="#generator">Generator</a>
+<a href="#presets">Presets</a>
+<a href="#features">Features</a>
+<a href="#faq">FAQ</a>
+</nav>
+</div>
+</header>
+
+<main class="container">
+<h1>CSS <span>Transition</span> Generator</h1>
+<p class="subtitle">Generate smooth CSS transitions with live preview, cubic-bezier editing, and instant code export.</p>
+
+<div class="grid" id="generator">
+<div>
+<div class="card">
+<h2>Transition Controls</h2>
+<div id="transitions-list"></div>
+<div class="actions">
+<button class="btn btn-primary btn-sm" onclick="addTransition()">+ Add Transition</button>
+<button class="btn btn-outline btn-sm" onclick="resetAll()">Reset</button>
+</div>
+<div id="bezier-editor-container" class="bezier-container">
+<label>Cubic Bezier Editor</label>
+<canvas id="bezier-canvas"></canvas>
+<div class="bezier-info">
+<span id="bezier-values">cubic-bezier(0.25, 0.10, 0.25, 1.00)</span>
+<span>Drag control points</span>
+</div>
+</div>
+</div>
+
+<div class="card" style="margin-top:16px">
+<h2>Live Preview</h2>
+<div id="preview-area">
+<div id="preview-box">HOVER</div>
+<span class="preview-hint">Hover over the area to preview</span>
+</div>
+</div>
+</div>
+
+<div>
+<div class="card" id="presets">
+<h2>Presets</h2>
+<div class="preset-grid" id="preset-grid"></div>
+</div>
+
+<div class="card" style="margin-top:16px">
+<h2>Generated CSS</h2>
+<div id="code-output">transition: all 0.3s ease;</div>
+<button class="btn btn-copy" onclick="copyCode()">📋 Copy CSS</button>
+</div>
+</div>
+</div>
+
+<section id="features">
+<h2>Features</h2>
+<div class="features-grid">
+<div class="feature">
+<h3>🎛️ Interactive Cubic-Bezier Editor</h3>
+<p>Visually drag control points on a bezier curve to create custom easing functions. See changes reflected in real-time on the preview box.</p>
+</div>
+<div class="feature">
+<h3>📦 Multi-Property Transitions</h3>
+<p>Add up to 5 property transitions with individual duration, delay, and timing functions. Generate complex, layered animation sequences.</p>
+</div>
+<div class="feature">
+<h3>⚡ 15 Ready-Made Presets</h3>
+<p>Choose from 15 common transition presets like fade, slide, bounce, spin, and elastic. One click to apply and customize further.</p>
+</div>
+<div class="feature">
+<h3>👀 Live Preview + Instant Code</h3>
+<p>Hover to see transitions animate in real-time. Copy production-ready CSS code with a single click — no dependencies needed.</p>
+</div>
+</div>
+</section>
+
+<section id="faq">
+<h2>Frequently Asked Questions</h2>
+<div class="faq-list">
+<div class="faq-item" onclick="this.classList.toggle('open')">
+<div class="faq-q">What is a CSS transition?</div>
+<div class="faq-a">A CSS transition allows you to change property values smoothly over a given duration. Instead of a property changing instantly on hover or state change, it animates between the old and new values. You control the duration, delay, timing function (easing curve), and which properties to animate.</div>
+</div>
+<div class="faq-item" onclick="this.classList.toggle('open')">
+<div class="faq-q">How do cubic-bezier timing functions work?</div>
+<div class="faq-a">A cubic-bezier function defines a custom acceleration curve with four values: cubic-bezier(x1, y1, x2, y2). The first pair (x1, y1) controls the first control point and the second pair (x2, y2) controls the second. X values represent time (0 to 1) and Y values represent the progress. Use our visual editor to drag these points and create custom easing.</div>
+</div>
+<div class="faq-item" onclick="this.classList.toggle('open')">
+<div class="faq-q">Can I use multiple transitions on one element?</div>
+<div class="faq-a">Yes! You can define multiple transitions separated by commas, each targeting different properties with its own duration, delay, and timing function. For example: transition: width 0.3s ease, opacity 0.5s ease-in-out. This generator supports adding up to 5 property transitions and outputs the combined CSS.</div>
+</div>
+</div>
+</section>
+
+<section id="cross-links">
+<h2>Related Tools</h2>
+<div class="cross-links">
+<a class="cross-link" href="https://css-gradient.pages.dev">
+<h4>CSS Gradient Generator</h4>
+<p>Create beautiful CSS gradients with live preview.</p>
+</a>
+<a class="cross-link" href="https://css-shadow.pages.dev">
+<h4>CSS Box Shadow Generator</h4>
+<p>Design box shadows with multiple layers.</p>
+</a>
+<a class="cross-link" href="https://css-border.pages.dev">
+<h4>CSS Border Radius Generator</h4>
+<p>Generate custom border-radius shapes visually.</p>
+</a>
+</div>
+</section>
+
+<section>
+<div class="email-section">
+<h2>Get CSS Tips & New Tools</h2>
+<p>Subscribe to get notified about new CSS generators and front-end tips.</p>
+<form class="email-form" onsubmit="event.preventDefault();subscribeEmail(this)">
+<input type="email" placeholder="you@example.com" required>
+<button class="btn btn-primary" type="submit">Subscribe</button>
+</form>
+<p id="email-msg" style="margin-top:10px;color:var(--green);display:none">Thanks for subscribing!</p>
+</div>
+</section>
+</main>
+
+<footer>
+<div class="container">
+<p>&copy; 2024 CSS Transition Generator. Free tool for web developers.</p>
+</div>
+</footer>
+
+<script>
+const PROPERTIES = ['all','width','height','color','background-color','transform','opacity','border-radius','box-shadow','margin','padding','font-size'];
+const TIMINGS = ['ease','linear','ease-in','ease-out','ease-in-out','cubic-bezier'];
+
+const PRESETS = [
+  {name:'Fade In',transitions:[{property:'opacity',duration:.5,delay:0,timing:'ease-in',cb:[.42,0,1,1]}]},
+  {name:'Slide Up',transitions:[{property:'transform',duration:.4,delay:0,timing:'ease-out',cb:[0,0,.58,1]}]},
+  {name:'Bounce',transitions:[{property:'transform',duration:.6,delay:0,timing:'cubic-bezier',cb:[.68,-.55,.265,1.55]}]},
+  {name:'Grow',transitions:[{property:'transform',duration:.3,delay:0,timing:'ease',cb:[.25,.1,.25,1]}]},
+  {name:'Spin',transitions:[{property:'transform',duration:.6,delay:0,timing:'linear',cb:[0,0,1,1]}]},
+  {name:'Color Shift',transitions:[{property:'background-color',duration:.4,delay:0,timing:'ease-in-out',cb:[.42,0,.58,1]}]},
+  {name:'Morph',transitions:[{property:'border-radius',duration:.5,delay:0,timing:'ease-in-out',cb:[.42,0,.58,1]},{property:'transform',duration:.5,delay:0,timing:'ease-in-out',cb:[.42,0,.58,1]}]},
+  {name:'Blur',transitions:[{property:'opacity',duration:.3,delay:0,timing:'ease',cb:[.25,.1,.25,1]}]},
+  {name:'Flip',transitions:[{property:'transform',duration:.5,delay:0,timing:'ease-in-out',cb:[.42,0,.58,1]}]},
+  {name:'Swing',transitions:[{property:'transform',duration:.5,delay:0,timing:'cubic-bezier',cb:[.175,.885,.32,1.275]}]},
+  {name:'Elastic',transitions:[{property:'transform',duration:.8,delay:0,timing:'cubic-bezier',cb:[.68,-.6,.32,1.6]}]},
+  {name:'Fade Scale',transitions:[{property:'opacity',duration:.4,delay:0,timing:'ease',cb:[.25,.1,.25,1]},{property:'transform',duration:.4,delay:0,timing:'ease',cb:[.25,.1,.25,1]}]},
+  {name:'Slide Left',transitions:[{property:'transform',duration:.4,delay:0,timing:'ease-out',cb:[0,0,.58,1]}]},
+  {name:'Pulse',transitions:[{property:'box-shadow',duration:.3,delay:0,timing:'ease',cb:[.25,.1,.25,1]}]},
+  {name:'Zoom Out',transitions:[{property:'transform',duration:.5,delay:0,timing:'cubic-bezier',cb:[.5,.05,.6,.95]}]}
+];
+
+let transitions = [{property:'all',duration:.3,delay:0,timing:'ease',cb:[.25,.1,.25,1]}];
+let activePreset = -1;
+let editingCbIndex = 0;
+let bezierP1 = {x:.25,y:.1}, bezierP2 = {x:.25,y:1};
+let dragging = null;
+
+function init(){
+  renderTransitions();
+  renderPresets();
+  updatePreview();
+  updateCode();
+  initBezier();
+}
+
+function renderTransitions(){
+  const list = document.getElementById('transitions-list');
+  list.innerHTML = '';
+  transitions.forEach((t,i)=>{
+    const div = document.createElement('div');
+    div.className = 'transition-row';
+    div.innerHTML = `
+      <button class="remove-btn" onclick="removeTransition(${i})" title="Remove">&times;</button>
+      <div class="row-grid-3">
+        <div>
+          <label>Property</label>
+          <select onchange="updateT(${i},'property',this.value)">
+            ${PROPERTIES.map(p=>`<option value="${p}"${t.property===p?' selected':''}>${p}</option>`).join('')}
+          </select>
+        </div>
+        <div>
+          <label>Duration (s)</label>
+          <input type="number" min="0" max="10" step="0.1" value="${t.duration}" onchange="updateT(${i},'duration',+this.value)">
+        </div>
+        <div>
+          <label>Delay (s)</label>
+          <input type="number" min="0" max="10" step="0.1" value="${t.delay}" onchange="updateT(${i},'delay',+this.value)">
+        </div>
+      </div>
+      <div class="row-grid">
+        <div>
+          <label>Timing Function</label>
+          <select onchange="updateT(${i},'timing',this.value);${t.timing==='cubic-bezier'?`openBezier(${i})`:''}">
+            ${TIMINGS.map(t2=>`<option value="${t2}"${t.timing===t2?' selected':''}>${t2}</option>`).join('')}
+          </select>
+        </div>
+        <div style="display:flex;align-items:end;padding-bottom:12px">
+          <button class="btn btn-outline btn-sm" onclick="openBezier(${i})" style="width:100%">Edit Bezier</button>
+        </div>
+      </div>`;
+    list.appendChild(div);
+  });
+}
+
+function updateT(i,prop,val){
+  transitions[i][prop] = val;
+  if(prop==='timing' && val==='cubic-bezier') openBezier(i);
+  activePreset = -1;
+  document.querySelectorAll('.preset-btn').forEach(b=>b.classList.remove('active'));
+  updatePreview();
+  updateCode();
+}
+
+function addTransition(){
+  if(transitions.length>=5) return;
+  transitions.push({property:'all',duration:.3,delay:0,timing:'ease',cb:[.25,.1,.25,1]});
+  renderTransitions();
+  updatePreview();
+  updateCode();
+}
+
+function removeTransition(i){
+  if(transitions.length<=1) return;
+  transitions.splice(i,1);
+  if(editingCbIndex>=transitions.length) editingCbIndex=0;
+  renderTransitions();
+  updatePreview();
+  updateCode();
+}
+
+function resetAll(){
+  transitions=[{property:'all',duration:.3,delay:0,timing:'ease',cb:[.25,.1,.25,1]}];
+  activePreset=-1;
+  document.querySelectorAll('.preset-btn').forEach(b=>b.classList.remove('active'));
+  renderTransitions();
+  updatePreview();
+  updateCode();
+}
+
+function renderPresets(){
+  const grid=document.getElementById('preset-grid');
+  grid.innerHTML='';
+  PRESETS.forEach((p,i)=>{
+    const btn=document.createElement('button');
+    btn.className='preset-btn';
+    btn.textContent=p.name;
+    btn.onclick=()=>applyPreset(i);
+    grid.appendChild(btn);
+  });
+}
+
+function applyPreset(i){
+  activePreset=i;
+  const p=PRESETS[i];
+  transitions=JSON.parse(JSON.stringify(p.transitions));
+  document.querySelectorAll('.preset-btn').forEach((b,j)=>b.classList.toggle('active',j===i));
+  renderTransitions();
+  updatePreview();
+  updateCode();
+}
+
+function buildCSSTransition(){
+  return transitions.map(t=>{
+    const timing = t.timing==='cubic-bezier' ? `cubic-bezier(${t.cb.map(v=>v.toFixed(2)).join(', ')})` : t.timing;
+    return `${t.property} ${t.duration}s ${timing} ${t.delay}s`;
+  }).join(';\n    ');
+}
+
+function updateCode(){
+  document.getElementById('code-output').textContent = `transition: ${buildCSSTransition()};`;
+}
+
+function updatePreview(){
+  const box=document.getElementById('preview-box');
+  const css=buildCSSTransition();
+  box.style.transition=css;
+}
+
+function copyCode(){
+  const code=`transition: ${buildCSSTransition()};`;
+  navigator.clipboard.writeText(code).then(()=>{
+    const btn=document.querySelector('.btn-copy');
+    btn.textContent='✓ Copied!';
+    btn.classList.add('copied');
+    setTimeout(()=>{btn.textContent='📋 Copy CSS';btn.classList.remove('copied');},1500);
+  });
+}
+
+function subscribeEmail(form){
+  form.querySelector('input').value='';
+  document.getElementById('email-msg').style.display='block';
+}
+
+// Bezier editor
+function initBezier(){
+  const canvas=document.getElementById('bezier-canvas');
+  const dpr=window.devicePixelRatio||1;
+  function resize(){
+    const rect=canvas.getBoundingClientRect();
+    canvas.width=rect.width*dpr;
+    canvas.height=200*dpr;
+    drawBezier();
+  }
+  window.addEventListener('resize',resize);
+  setTimeout(resize,50);
+
+  canvas.addEventListener('mousedown',e=>{
+    const rect=canvas.getBoundingClientRect();
+    const x=e.clientX-rect.left, y=e.clientY-rect.top;
+    const w=rect.width, h=200;
+    const pad=30, iw=w-2*pad, ih=h-2*pad;
+    const p1x=pad+bezierP1.x*iw, p1y=pad+(1-bezierP1.y)*ih;
+    const p2x=pad+bezierP2.x*iw, p2y=pad+(1-bezierP2.y)*ih;
+    if(Math.hypot(x-p1x,y-p1y)<15) dragging='p1';
+    else if(Math.hypot(x-p2x,y-p2y)<15) dragging='p2';
+  });
+  canvas.addEventListener('mousemove',e=>{
+    if(!dragging) return;
+    const rect=canvas.getBoundingClientRect();
+    const x=e.clientX-rect.left, y=e.clientY-rect.top;
+    const w=rect.width, h=200;
+    const pad=30, iw=w-2*pad, ih=h-2*pad;
+    const nx=Math.max(0,Math.min(1,(x-pad)/iw));
+    const ny=Math.max(-.5,Math.min(1.5,1-(y-pad)/ih));
+    if(dragging==='p1'){bezierP1.x=nx;bezierP1.y=ny}
+    else{bezierP2.x=nx;bezierP2.y=ny}
+    applyBezierToTransition();
+    drawBezier();
+  });
+  canvas.addEventListener('mouseup',()=>{dragging=null});
+  canvas.addEventListener('mouseleave',()=>{dragging=null});
+  // Touch
+  canvas.addEventListener('touchstart',e=>{
+    e.preventDefault();
+    const t=e.touches[0];
+    const rect=canvas.getBoundingClientRect();
+    const x=t.clientX-rect.left,y=t.clientY-rect.top;
+    const w=rect.width,h=200,pad=30,iw=w-2*pad,ih=h-2*pad;
+    const p1x=pad+bezierP1.x*iw,p1y=pad+(1-bezierP1.y)*ih;
+    const p2x=pad+bezierP2.x*iw,p2y=pad+(1-bezierP2.y)*ih;
+    if(Math.hypot(x-p1x,y-p1y)<25) dragging='p1';
+    else if(Math.hypot(x-p2x,y-p2y)<25) dragging='p2';
+  },{passive:false});
+  canvas.addEventListener('touchmove',e=>{
+    e.preventDefault();
+    if(!dragging) return;
+    const t=e.touches[0];
+    const rect=canvas.getBoundingClientRect();
+    const x=t.clientX-rect.left,y=t.clientY-rect.top;
+    const w=rect.width,h=200,pad=30,iw=w-2*pad,ih=h-2*pad;
+    const nx=Math.max(0,Math.min(1,(x-pad)/iw));
+    const ny=Math.max(-.5,Math.min(1.5,1-(y-pad)/ih));
+    if(dragging==='p1'){bezierP1.x=nx;bezierP1.y=ny}
+    else{bezierP2.x=nx;bezierP2.y=ny}
+    applyBezierToTransition();
+    drawBezier();
+  },{passive:false});
+  canvas.addEventListener('touchend',()=>{dragging=null});
+}
+
+function drawBezier(){
+  const canvas=document.getElementById('bezier-canvas');
+  const ctx=canvas.getContext('2d');
+  const dpr=window.devicePixelRatio||1;
+  const w=canvas.width/dpr, h=canvas.height/dpr;
+  ctx.setTransform(dpr,0,0,dpr,0,0);
+  ctx.clearRect(0,0,w,h);
+  const pad=30, iw=w-2*pad, ih=h-2*pad;
+
+  // Grid
+  ctx.strokeStyle='#21262d';
+  ctx.lineWidth=1;
+  for(let i=0;i<=4;i++){
+    const y=pad+ih*i/4;
+    ctx.beginPath();ctx.moveTo(pad,y);ctx.lineTo(pad+iw,y);ctx.stroke();
+    const x=pad+iw*i/4;
+    ctx.beginPath();ctx.moveTo(x,pad);ctx.lineTo(x,pad+ih);ctx.stroke();
+  }
+
+  // Axes labels
+  ctx.fillStyle='#8b949e';
+  ctx.font='10px sans-serif';
+  ctx.fillText('0',pad-4,pad+ih+14);
+  ctx.fillText('1',pad+iw-4,pad+ih+14);
+  ctx.fillText('1',pad-16,pad+4);
+
+  // Diagonal reference
+  ctx.strokeStyle='#30363d';
+  ctx.setLineDash([4,4]);
+  ctx.beginPath();ctx.moveTo(pad,pad+ih);ctx.lineTo(pad+iw,pad);ctx.stroke();
+  ctx.setLineDash([]);
+
+  // Bezier curve
+  const x0=pad, y0=pad+ih;
+  const x3=pad+iw, y3=pad;
+  const cp1x=pad+bezierP1.x*iw, cp1y=pad+(1-bezierP1.y)*ih;
+  const cp2x=pad+bezierP2.x*iw, cp2y=pad+(1-bezierP2.y)*ih;
+
+  // Control lines
+  ctx.strokeStyle='#58a6ff44';
+  ctx.lineWidth=1;
+  ctx.beginPath();ctx.moveTo(x0,y0);ctx.lineTo(cp1x,cp1y);ctx.stroke();
+  ctx.beginPath();ctx.moveTo(x3,y3);ctx.lineTo(cp2x,cp2y);ctx.stroke();
+
+  // Curve
+  ctx.strokeStyle='#58a6ff';
+  ctx.lineWidth=2.5;
+  ctx.beginPath();
+  ctx.moveTo(x0,y0);
+  ctx.bezierCurveTo(cp1x,cp1y,cp2x,cp2y,x3,y3);
+  ctx.stroke();
+
+  // Control points
+  ctx.fillStyle='#58a6ff';
+  ctx.beginPath();ctx.arc(cp1x,cp1y,6,0,Math.PI*2);ctx.fill();
+  ctx.fillStyle='#79c0ff';
+  ctx.beginPath();ctx.arc(cp2x,cp2y,6,0,Math.PI*2);ctx.fill();
+
+  // Start/end
+  ctx.fillStyle='#3fb950';
+  ctx.beginPath();ctx.arc(x0,y0,4,0,Math.PI*2);ctx.fill();
+  ctx.fillStyle='#d29922';
+  ctx.beginPath();ctx.arc(x3,y3,4,0,Math.PI*2);ctx.fill();
+
+  document.getElementById('bezier-values').textContent=`cubic-bezier(${bezierP1.x.toFixed(2)}, ${bezierP1.y.toFixed(2)}, ${bezierP2.x.toFixed(2)}, ${bezierP2.y.toFixed(2)})`;
+}
+
+function openBezier(i){
+  editingCbIndex=i;
+  const t=transitions[i];
+  bezierP1.x=t.cb[0]; bezierP1.y=t.cb[1];
+  bezierP2.x=t.cb[2]; bezierP2.y=t.cb[3];
+  if(t.timing!=='cubic-bezier'){
+    t.timing='cubic-bezier';
+    renderTransitions();
+  }
+  document.getElementById('bezier-editor-container').classList.add('visible');
+  drawBezier();
+}
+
+function applyBezierToTransition(){
+  const t=transitions[editingCbIndex];
+  if(!t) return;
+  t.timing='cubic-bezier';
+  t.cb=[bezierP1.x,bezierP1.y,bezierP2.x,bezierP2.y];
+  activePreset=-1;
+  document.querySelectorAll('.preset-btn').forEach(b=>b.classList.remove('active'));
+  updatePreview();
+  updateCode();
+}
+
+init();
+</script>
+</body>
+</html>
